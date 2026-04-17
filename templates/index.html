@@ -18,10 +18,7 @@
       padding: 40px 20px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 36px;
-    }
+    header { text-align: center; margin-bottom: 36px; }
     header h1 { font-size: 2rem; color: #4fc3f7; letter-spacing: 1px; }
     header p  { font-size: .9rem; color: #7a9ab5; margin-top: 6px; }
 
@@ -31,17 +28,12 @@
       border-radius: 14px;
       padding: 28px 32px;
       width: 100%;
-      max-width: 640px;
+      max-width: 700px;
       margin-bottom: 28px;
     }
     .card h2 { font-size: 1rem; color: #4fc3f7; margin-bottom: 18px; text-transform: uppercase; letter-spacing: .8px; }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .form-row.single { grid-template-columns: 1fr; }
 
     label { display: block; font-size: .82rem; color: #7a9ab5; margin-bottom: 6px; }
@@ -87,46 +79,41 @@
     button:hover { background: #81d4fa; }
     button:disabled { background: #1e3347; color: #4a6070; cursor: not-allowed; }
 
-    /* ── Resultado ── */
     .resultado-box {
       background: #0f1923;
       border: 1px solid #1e3347;
       border-radius: 10px;
       padding: 18px 20px;
-      margin-bottom: 20px;
     }
-    .resultado-valor {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #4fc3f7;
-      text-align: center;
-      margin-bottom: 6px;
-    }
-    .resultado-sub {
-      text-align: center;
-      font-size: .85rem;
-      color: #7a9ab5;
-    }
+    .resultado-valor { font-size: 2.2rem; font-weight: 700; color: #4fc3f7; text-align: center; margin-bottom: 6px; }
+    .resultado-sub   { text-align: center; font-size: .85rem; color: #7a9ab5; }
 
-    /* ── Tabla tokens ── */
     table { width: 100%; border-collapse: collapse; font-size: .85rem; }
-    th {
-      background: #1e3347;
-      color: #4fc3f7;
-      padding: 8px 12px;
-      text-align: left;
-      font-weight: 600;
-    }
+    th { background: #1e3347; color: #4fc3f7; padding: 8px 12px; text-align: left; font-weight: 600; }
     td { padding: 8px 12px; border-bottom: 1px solid #1a2d3e; }
     tr:last-child td { border-bottom: none; }
     tr:nth-child(even) td { background: #131f2a; }
 
-    /* ── Árbol ── */
-    .tree { font-family: monospace; font-size: .85rem; line-height: 1.7; }
-    .tree-node { color: #4fc3f7; font-weight: 600; }
-    .tree-token { color: #80cbc4; }
-    .tree-valor { color: #a5d6a7; }
-    ul.tree-list { list-style: none; padding-left: 20px; border-left: 1px solid #1e3347; margin-left: 8px; }
+    #arbol-svg-wrap {
+      width: 100%;
+      overflow-x: auto;
+      background: #0b1520;
+      border: 1px solid #1e3347;
+      border-radius: 10px;
+      padding: 16px 8px;
+    }
+    #arbol-svg { display: block; margin: 0 auto; }
+
+    .leyenda {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      font-size: .78rem;
+      color: #7a9ab5;
+    }
+    .leyenda-item { display: flex; align-items: center; gap: 6px; }
+    .leyenda-dot  { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
 
     .error-msg {
       background: #2a1018;
@@ -138,13 +125,7 @@
     }
 
     .hidden { display: none; }
-    .section-label {
-      font-size: .78rem;
-      color: #4a6070;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-      margin-bottom: 10px;
-    }
+    .section-label { font-size: .78rem; color: #4a6070; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
   </style>
 </head>
 <body>
@@ -157,14 +138,12 @@
 <!-- Formulario -->
 <div class="card">
   <h2>Nueva Conversión</h2>
-
   <div class="form-row single">
     <div>
       <label>Cantidad</label>
       <input type="number" id="cantidad" placeholder="Ej: 1500" min="0" step="any"/>
     </div>
   </div>
-
   <div class="form-row">
     <div>
       <label>Moneda de Origen</label>
@@ -185,10 +164,8 @@
       </select>
     </div>
   </div>
-
   <p class="section-label">Cadena generada</p>
   <div class="cadena-preview" id="cadena-preview">—</div>
-
   <button id="btn-convertir" onclick="convertir()">Convertir</button>
 </div>
 
@@ -197,7 +174,7 @@
   <h2>Resultado</h2>
   <div class="resultado-box">
     <div class="resultado-valor" id="resultado-valor">—</div>
-    <div class="resultado-sub" id="resultado-sub"></div>
+    <div class="resultado-sub"   id="resultado-sub"></div>
   </div>
 </div>
 
@@ -210,14 +187,7 @@
 <div class="card hidden" id="card-tokens">
   <h2>Analizador Léxico — Tokens</h2>
   <table>
-    <thead>
-      <tr>
-        <th>Línea</th>
-        <th>Tipo</th>
-        <th>Valor / Lexema</th>
-        <th>Posición</th>
-      </tr>
-    </thead>
+    <thead><tr><th>Línea</th><th>Tipo</th><th>Valor / Lexema</th><th>Posición</th></tr></thead>
     <tbody id="tabla-tokens"></tbody>
   </table>
 </div>
@@ -225,118 +195,208 @@
 <!-- Árbol -->
 <div class="card hidden" id="card-arbol">
   <h2>Árbol de Análisis Sintáctico</h2>
-  <div class="tree" id="arbol-container"></div>
+  <div id="arbol-svg-wrap">
+    <svg id="arbol-svg"></svg>
+  </div>
+  <div class="leyenda">
+    <div class="leyenda-item"><div class="leyenda-dot" style="background:#1A3A5C;border:2px solid #4fc3f7"></div> Regla de producción</div>
+    <div class="leyenda-item"><div class="leyenda-dot" style="background:#0f3320;border:2px solid #4caf50;border-radius:8px"></div> Token</div>
+    <div class="leyenda-item"><div class="leyenda-dot" style="background:#1a1a0a;border:2px solid #ffd54f"></div> Valor léxico (lexema)</div>
+  </div>
 </div>
 
 <script>
-  // Actualizar preview de cadena en tiempo real
-  ['cantidad','origen','destino'].forEach(id => {
-    document.getElementById(id).addEventListener('input', actualizarPreview);
+// ─── Preview ──────────────────────────────────────────────────────────────────
+['cantidad','origen','destino'].forEach(id =>
+  document.getElementById(id).addEventListener('input', actualizarPreview)
+);
+function actualizarPreview() {
+  const c = document.getElementById('cantidad').value.trim();
+  const o = document.getElementById('origen').value;
+  const d = document.getElementById('destino').value;
+  document.getElementById('cadena-preview').textContent =
+    (c && o && d) ? `${c}${o}a${d}$` : '—';
+}
+
+// ─── Fetch ────────────────────────────────────────────────────────────────────
+async function convertir() {
+  const cantidad = document.getElementById('cantidad').value.trim();
+  const origen   = document.getElementById('origen').value;
+  const destino  = document.getElementById('destino').value;
+
+  ['card-resultado','card-error','card-tokens','card-arbol'].forEach(id =>
+    document.getElementById(id).classList.add('hidden')
+  );
+
+  if (!cantidad || !origen || !destino) { mostrarError("Completa todos los campos."); return; }
+
+  const btn = document.getElementById('btn-convertir');
+  btn.disabled = true; btn.textContent = 'Procesando...';
+
+  try {
+    const res  = await fetch('/convertir', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({cantidad, origen, destino})
+    });
+    const data = await res.json();
+    if (data.error) { mostrarError(data.error); }
+    else { mostrarResultado(data); mostrarTokens(data.tokens); dibujarArbol(data.arbol); }
+  } catch(e) { mostrarError("Error de conexión con el servidor."); }
+  finally { btn.disabled = false; btn.textContent = 'Convertir'; }
+}
+
+function mostrarError(msg) {
+  document.getElementById('error-msg').textContent = msg;
+  document.getElementById('card-error').classList.remove('hidden');
+}
+function mostrarResultado(data) {
+  const s = data.semantica;
+  document.getElementById('resultado-valor').textContent =
+    `${s.resultado.toLocaleString('es-HN',{minimumFractionDigits:2,maximumFractionDigits:4})} ${s.cod_destino}`;
+  document.getElementById('resultado-sub').textContent =
+    `${s.cantidad} ${s.cod_origen}  →  ${s.resultado} ${s.cod_destino}  |  Tasa: 1 ${s.cod_origen} = ${s.tasa} ${s.cod_destino}`;
+  document.getElementById('card-resultado').classList.remove('hidden');
+}
+function mostrarTokens(tokens) {
+  const tbody = document.getElementById('tabla-tokens');
+  tbody.innerHTML = '';
+  tokens.forEach(t => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${t.linea}</td><td>${t.tipo}</td><td>${t.valor}</td><td>${t.posicion}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('card-tokens').classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ÁRBOL SINTÁCTICO — SVG
+// ═══════════════════════════════════════════════════════════════════════════════
+const NW = 150, NH = 36, LH = 110, PAD_X = 30, PAD_Y = 40;
+
+// Paso 1: contar hojas
+function countLeaves(n) {
+  if (!n.hijos || n.hijos.length === 0) { n._lv = 1; return 1; }
+  n._lv = n.hijos.reduce((s, h) => s + countLeaves(h), 0);
+  return n._lv;
+}
+
+// Paso 2: asignar coordenadas
+function assignPos(n, depth, leftLeaf, lw) {
+  n._d = depth;
+  n._y = depth * LH + PAD_Y;
+  if (!n.hijos || n.hijos.length === 0) {
+    n._x = leftLeaf * lw + lw / 2;
+    return;
+  }
+  let cur = leftLeaf;
+  n.hijos.forEach(h => { assignPos(h, depth+1, cur, lw); cur += h._lv; });
+  n._x = (n.hijos[0]._x + n.hijos[n.hijos.length-1]._x) / 2;
+}
+
+// Paso 3: recolectar todos
+function collect(n, arr) {
+  arr.push(n);
+  if (n.hijos) n.hijos.forEach(h => collect(h, arr));
+  return arr;
+}
+
+// Paso 4: agregar hijos de valor bajo cada token
+function expandValues(n) {
+  if (n.tipo === 'token') {
+    n.hijos = [{ tipo:'valor', nombre: n.valor, valor: n.valor, hijos:[] }];
+  }
+  if (n.hijos) n.hijos.forEach(expandValues);
+}
+
+// Paso 5: etiqueta visible
+function label(n) {
+  if (n.tipo === 'regla') return n.nombre.toUpperCase();
+  if (n.tipo === 'token') return n.nombre;
+  return `"${n.valor}"`;
+}
+
+function svgEl(tag, attrs, text) {
+  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, String(v)));
+  if (text !== undefined) el.textContent = text;
+  return el;
+}
+
+function dibujarArbol(raiz) {
+  const svg = document.getElementById('arbol-svg');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+  expandValues(raiz);
+  const totalLeaves = countLeaves(raiz);
+  const lw = Math.max(NW + 30, 680 / totalLeaves);
+  assignPos(raiz, 0, 0, lw);
+
+  const nodes  = collect(raiz, []);
+  const maxD   = Math.max(...nodes.map(n => n._d));
+  const svgW   = totalLeaves * lw + PAD_X * 2;
+  const svgH   = (maxD + 1) * LH + PAD_Y + NH + 30;
+
+  svg.setAttribute('width',  svgW);
+  svg.setAttribute('height', svgH);
+  svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+
+  // ── Definir marcador de flecha ──
+  const defs = svgEl('defs', {});
+  const mk   = svgEl('marker', { id:'arr', markerWidth:10, markerHeight:7, refX:9, refY:3.5, orient:'auto' });
+  mk.appendChild(svgEl('polygon', { points:'0 0, 10 3.5, 0 7', fill:'#2e5473' }));
+  defs.appendChild(mk);
+  svg.appendChild(defs);
+
+  // ── Aristas ──
+  nodes.forEach(n => {
+    if (!n.hijos) return;
+    n.hijos.forEach(c => {
+      const x1=n._x, y1=n._y+NH, x2=c._x, y2=c._y;
+      const my=(y1+y2)/2;
+      svg.appendChild(svgEl('path', {
+        d:`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`,
+        stroke:'#2e5473', 'stroke-width':1.8, fill:'none', 'marker-end':'url(#arr)'
+      }));
+    });
   });
 
-  function actualizarPreview() {
-    const c = document.getElementById('cantidad').value.trim();
-    const o = document.getElementById('origen').value;
-    const d = document.getElementById('destino').value;
-    const preview = document.getElementById('cadena-preview');
-    if (c && o && d) {
-      preview.textContent = `${c}${o}a${d}$`;
+  // ── Nodos ──
+  nodes.forEach(n => {
+    const x = n._x - NW/2;
+    const y = n._y;
+    const lbl = label(n);
+    const maxCh = 17;
+    const disp  = lbl.length > maxCh ? lbl.slice(0, maxCh-1)+'…' : lbl;
+
+    let fill, stroke, tcolor, rx, fw, fs;
+    if (n.tipo === 'regla') {
+      fill='#1A3A5C'; stroke='#4fc3f7'; tcolor='#e0f4ff'; rx=8; fw='bold'; fs=13;
+    } else if (n.tipo === 'token') {
+      fill='#0f3320'; stroke='#4caf50'; tcolor='#b9f6ca'; rx=NH/2; fw='600'; fs=12;
     } else {
-      preview.textContent = '—';
-    }
-  }
-
-  async function convertir() {
-    const cantidad = document.getElementById('cantidad').value.trim();
-    const origen   = document.getElementById('origen').value;
-    const destino  = document.getElementById('destino').value;
-
-    // Ocultar todo
-    ['card-resultado','card-error','card-tokens','card-arbol'].forEach(id => {
-      document.getElementById(id).classList.add('hidden');
-    });
-
-    if (!cantidad || !origen || !destino) {
-      mostrarError("Completa todos los campos antes de convertir.");
-      return;
+      fill='#1c1608'; stroke='#ffd54f'; tcolor='#fff9c4'; rx=4; fw='normal'; fs=11;
     }
 
-    const btn = document.getElementById('btn-convertir');
-    btn.disabled = true;
-    btn.textContent = 'Procesando...';
+    const g = svgEl('g', {});
 
-    try {
-      const res  = await fetch('/convertir', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cantidad, origen, destino })
-      });
-      const data = await res.json();
+    const rect = svgEl('rect', { x, y, width:NW, height:NH, rx, fill, stroke, 'stroke-width':2 });
+    const title = svgEl('title', {}, lbl);
+    rect.appendChild(title);
+    g.appendChild(rect);
 
-      if (data.error) {
-        mostrarError(data.error);
-      } else {
-        mostrarResultado(data);
-        mostrarTokens(data.tokens);
-        mostrarArbol(data.arbol);
-      }
-    } catch(e) {
-      mostrarError("Error de conexión con el servidor.");
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Convertir';
-    }
-  }
+    const txt = svgEl('text', {
+      x: n._x, y: y + NH/2 + 1,
+      'text-anchor':'middle', 'dominant-baseline':'middle',
+      fill: tcolor, 'font-family':'Segoe UI,Arial,sans-serif',
+      'font-size': fs, 'font-weight': fw
+    }, disp);
+    g.appendChild(txt);
 
-  function mostrarError(msg) {
-    document.getElementById('error-msg').textContent = msg;
-    document.getElementById('card-error').classList.remove('hidden');
-  }
+    svg.appendChild(g);
+  });
 
-  function mostrarResultado(data) {
-    const s = data.semantica;
-    document.getElementById('resultado-valor').textContent =
-      `${s.resultado.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 4})} ${s.cod_destino}`;
-    document.getElementById('resultado-sub').textContent =
-      `${s.cantidad} ${s.cod_origen}  →  ${s.resultado} ${s.cod_destino}  |  Tasa: 1 ${s.cod_origen} = ${s.tasa} ${s.cod_destino}`;
-    document.getElementById('card-resultado').classList.remove('hidden');
-  }
-
-  function mostrarTokens(tokens) {
-    const tbody = document.getElementById('tabla-tokens');
-    tbody.innerHTML = '';
-    tokens.forEach(t => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${t.linea}</td><td>${t.tipo}</td><td>${t.valor}</td><td>${t.posicion}</td>`;
-      tbody.appendChild(tr);
-    });
-    document.getElementById('card-tokens').classList.remove('hidden');
-  }
-
-  function mostrarArbol(nodo) {
-    const container = document.getElementById('arbol-container');
-    container.innerHTML = '';
-    container.appendChild(renderNodo(nodo));
-    document.getElementById('card-arbol').classList.remove('hidden');
-  }
-
-  function renderNodo(nodo) {
-    const div = document.createElement('div');
-    if (nodo.tipo === 'regla') {
-      div.innerHTML = `<span class="tree-node">[${nodo.nombre}]</span>`;
-      const ul = document.createElement('ul');
-      ul.className = 'tree-list';
-      nodo.hijos.forEach(hijo => {
-        const li = document.createElement('li');
-        li.appendChild(renderNodo(hijo));
-        ul.appendChild(li);
-      });
-      div.appendChild(ul);
-    } else if (nodo.tipo === 'token') {
-      div.innerHTML = `<span class="tree-token">${nodo.nombre}</span>: <span class="tree-valor">"${nodo.valor}"</span>`;
-    }
-    return div;
-  }
+  document.getElementById('card-arbol').classList.remove('hidden');
+}
 </script>
 </body>
 </html>
