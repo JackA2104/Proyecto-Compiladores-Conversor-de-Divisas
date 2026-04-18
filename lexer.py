@@ -12,6 +12,7 @@ DIVISAS = {
     "PesoMexicano":        "MXN",
     "LibraEsterlina":      "GBP",
     "YenJaponés":          "JPY",
+    "ColonCostarricense":  "CRC",
 }
 
 # ─── TOKENS ───────────────────────────────────────────────────────────────────
@@ -33,7 +34,7 @@ def t_NUMERO(t):
 
 
 def t_MONEDA(t):
-    r"""DólarEstadounidense|EuroUnión|LempiraHondureño|PesoMexicano|LibraEsterlina|YenJaponés"""
+    r"""DólarEstadounidense|EuroUnión|LempiraHondureño|PesoMexicano|LibraEsterlina|YenJaponés|ColonCostarricense"""
     t.value = t.value  # string tal cual
     return t
 
