@@ -95,13 +95,16 @@
     tr:nth-child(even) td { background: #131f2a; }
 
     #arbol-svg-wrap {
-      width: 100%;
+      width: auto;
       overflow-x: auto;
       background: #0b1520;
       border: 1px solid #1e3347;
       border-radius: 10px;
       padding: 16px 8px;
+      display: flex;
+      justify-content: center;
     }
+    #card-arbol { max-width: 95%; }
     #arbol-svg { display: block; margin: 0 auto; }
 
     .leyenda {
@@ -199,9 +202,8 @@
     <svg id="arbol-svg"></svg>
   </div>
   <div class="leyenda">
-    <div class="leyenda-item"><div class="leyenda-dot" style="background:#1A3A5C;border:2px solid #4fc3f7"></div> Regla de producción</div>
-    <div class="leyenda-item"><div class="leyenda-dot" style="background:#0f3320;border:2px solid #4caf50;border-radius:8px"></div> Token</div>
-    <div class="leyenda-item"><div class="leyenda-dot" style="background:#1a1a0a;border:2px solid #ffd54f"></div> Valor léxico (lexema)</div>
+    <div class="leyenda-item"><div class="leyenda-dot" style="background:#1A3A5C;border:2px solid #4fc3f7"></div> No terminal (regla de producción)</div>
+    <div class="leyenda-item"><div class="leyenda-dot" style="background:#0f3320;border:2px solid #4caf50;border-radius:8px"></div> Terminal (token + lexema)</div>
   </div>
 </div>
 
@@ -229,6 +231,7 @@ async function convertir() {
   );
 
   if (!cantidad || !origen || !destino) { mostrarError("Completa todos los campos."); return; }
+  if (origen === destino) { mostrarError("La moneda de origen y destino no pueden ser iguales."); return; }
 
   const btn = document.getElementById('btn-convertir');
   btn.disabled = true; btn.textContent = 'Procesando...';
@@ -271,7 +274,7 @@ function mostrarTokens(tokens) {
 // ═══════════════════════════════════════════════════════════════════════════════
 //  ÁRBOL SINTÁCTICO — SVG
 // ═══════════════════════════════════════════════════════════════════════════════
-const NW = 150, NH = 36, LH = 110, PAD_X = 30, PAD_Y = 40;
+const NW = 160, NH = 46, LH = 100, PAD_X = 30, PAD_Y = 40;
 
 // Paso 1: contar hojas
 function countLeaves(n) {
@@ -300,19 +303,19 @@ function collect(n, arr) {
   return arr;
 }
 
-// Paso 4: agregar hijos de valor bajo cada token
-function expandValues(n) {
-  if (n.tipo === 'token') {
-    n.hijos = [{ tipo:'valor', nombre: n.valor, valor: n.valor, hijos:[] }];
-  }
-  if (n.hijos) n.hijos.forEach(expandValues);
-}
+// Paso 4 (eliminado): ya no se expanden nodos de valor como hijos separados.
 
-// Paso 5: etiqueta visible
+// Etiqueta principal del nodo (línea 1)
 function label(n) {
   if (n.tipo === 'regla') return n.nombre.toUpperCase();
-  if (n.tipo === 'token') return n.nombre;
-  return `"${n.valor}"`;
+  if (n.tipo === 'token') return n.nombre;  // nombre del token en mayúsculas
+  return n.nombre;
+}
+
+// Sublabel para tokens: el valor léxico (línea 2)
+function sublabel(n) {
+  if (n.tipo === 'token' && n.valor) return `"${n.valor}"`;
+  return null;
 }
 
 function svgEl(tag, attrs, text) {
@@ -326,7 +329,7 @@ function dibujarArbol(raiz) {
   const svg = document.getElementById('arbol-svg');
   while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-  expandValues(raiz);
+  // NO llamamos expandValues: el árbol solo tiene terminales y no terminales
   const totalLeaves = countLeaves(raiz);
   const lw = Math.max(NW + 30, 680 / totalLeaves);
   assignPos(raiz, 0, 0, lw);
@@ -336,9 +339,10 @@ function dibujarArbol(raiz) {
   const svgW   = totalLeaves * lw + PAD_X * 2;
   const svgH   = (maxD + 1) * LH + PAD_Y + NH + 30;
 
-  svg.setAttribute('width',  svgW);
-  svg.setAttribute('height', svgH);
   svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+  svg.style.width = '100%';
+  svg.style.height = 'auto';
+  svg.style.maxWidth = `${svgW}px`;
 
   // ── Definir marcador de flecha ──
   const defs = svgEl('defs', {});
@@ -362,35 +366,56 @@ function dibujarArbol(raiz) {
 
   // ── Nodos ──
   nodes.forEach(n => {
-    const x = n._x - NW/2;
-    const y = n._y;
+    const x   = n._x - NW/2;
+    const y   = n._y;
     const lbl = label(n);
-    const maxCh = 17;
+    const sub = sublabel(n);
+    const maxCh = 18;
     const disp  = lbl.length > maxCh ? lbl.slice(0, maxCh-1)+'…' : lbl;
+    const dispSub = sub && sub.length > maxCh ? sub.slice(0, maxCh-1)+'…' : sub;
 
-    let fill, stroke, tcolor, rx, fw, fs;
+    let fill, stroke, tcolor, subcolor, rx, fw, fs;
     if (n.tipo === 'regla') {
-      fill='#1A3A5C'; stroke='#4fc3f7'; tcolor='#e0f4ff'; rx=8; fw='bold'; fs=13;
-    } else if (n.tipo === 'token') {
-      fill='#0f3320'; stroke='#4caf50'; tcolor='#b9f6ca'; rx=NH/2; fw='600'; fs=12;
+      fill='#1A3A5C'; stroke='#4fc3f7'; tcolor='#e0f4ff'; subcolor='#90caf9'; rx=8; fw='bold'; fs=13;
     } else {
-      fill='#1c1608'; stroke='#ffd54f'; tcolor='#fff9c4'; rx=4; fw='normal'; fs=11;
+      // terminal / token
+      fill='#0f3320'; stroke='#4caf50'; tcolor='#b9f6ca'; subcolor='#69f0ae'; rx=NH/2; fw='600'; fs=12;
     }
 
     const g = svgEl('g', {});
 
     const rect = svgEl('rect', { x, y, width:NW, height:NH, rx, fill, stroke, 'stroke-width':2 });
-    const title = svgEl('title', {}, lbl);
+    const title = svgEl('title', {}, sub ? `${lbl}: ${sub}` : lbl);
     rect.appendChild(title);
     g.appendChild(rect);
 
-    const txt = svgEl('text', {
-      x: n._x, y: y + NH/2 + 1,
-      'text-anchor':'middle', 'dominant-baseline':'middle',
-      fill: tcolor, 'font-family':'Segoe UI,Arial,sans-serif',
-      'font-size': fs, 'font-weight': fw
-    }, disp);
-    g.appendChild(txt);
+    if (sub) {
+      // Dos líneas: nombre arriba, valor léxico abajo
+      const txtTop = svgEl('text', {
+        x: n._x, y: y + NH/2 - 7,
+        'text-anchor':'middle', 'dominant-baseline':'middle',
+        fill: tcolor, 'font-family':'Segoe UI,Arial,sans-serif',
+        'font-size': fs, 'font-weight': fw
+      }, disp);
+      g.appendChild(txtTop);
+
+      const txtBot = svgEl('text', {
+        x: n._x, y: y + NH/2 + 9,
+        'text-anchor':'middle', 'dominant-baseline':'middle',
+        fill: subcolor, 'font-family':'monospace',
+        'font-size': 10, 'font-weight': 'normal'
+      }, dispSub);
+      g.appendChild(txtBot);
+    } else {
+      // Una sola línea centrada
+      const txt = svgEl('text', {
+        x: n._x, y: y + NH/2 + 1,
+        'text-anchor':'middle', 'dominant-baseline':'middle',
+        fill: tcolor, 'font-family':'Segoe UI,Arial,sans-serif',
+        'font-size': fs, 'font-weight': fw
+      }, disp);
+      g.appendChild(txt);
+    }
 
     svg.appendChild(g);
   });

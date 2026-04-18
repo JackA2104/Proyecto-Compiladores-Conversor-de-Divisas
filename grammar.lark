@@ -1,9 +1,9 @@
-# grammar.lark
-# Gramática del Conversor de Divisas para Lark (parser LALR)
+// grammar.lark
+// Gramática del Conversor de Divisas para Lark (parser LALR)
 
 start: expresion
 
-expresion: NUMERO MONEDA "a" MONEDA "$"
+expresion: NUMERO MONEDA A MONEDA FIN
 
 NUMERO: /\d+(\.\d+)?/
 
@@ -13,6 +13,10 @@ MONEDA: "DólarEstadounidense"
       | "PesoMexicano"
       | "LibraEsterlina"
       | "YenJaponés"
+      | "ColonCostarricense"
+
+A: "a"
+FIN: "$"
 
 %ignore " "
 %ignore "\t"

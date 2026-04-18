@@ -24,6 +24,9 @@ def convertir():
     if not cantidad or not origen or not destino:
         return jsonify({"error": "Todos los campos son obligatorios."}), 400
 
+    if origen == destino:
+        return jsonify({"error": "La moneda de origen y destino no pueden ser iguales."}), 400
+
     # Construir la cadena en el formato que espera el lexer/parser
     cadena = f"{cantidad}{origen}a{destino}$"
 
