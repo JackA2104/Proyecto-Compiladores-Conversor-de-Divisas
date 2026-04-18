@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Conversor de Divisas — Compiladores</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -18,9 +25,22 @@
       padding: 40px 20px;
     }
 
-    header { text-align: center; margin-bottom: 36px; }
-    header h1 { font-size: 2rem; color: #4fc3f7; letter-spacing: 1px; }
-    header p  { font-size: .9rem; color: #7a9ab5; margin-top: 6px; }
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #4fc3f7;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      font-size: .9rem;
+      color: #7a9ab5;
+      margin-top: 6px;
+    }
 
     .card {
       background: #162330;
@@ -31,14 +51,35 @@
       max-width: 700px;
       margin-bottom: 28px;
     }
-    .card h2 { font-size: 1rem; color: #4fc3f7; margin-bottom: 18px; text-transform: uppercase; letter-spacing: .8px; }
 
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .form-row.single { grid-template-columns: 1fr; }
+    .card h2 {
+      font-size: 1rem;
+      color: #4fc3f7;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
 
-    label { display: block; font-size: .82rem; color: #7a9ab5; margin-bottom: 6px; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
 
-    input, select {
+    .form-row.single {
+      grid-template-columns: 1fr;
+    }
+
+    label {
+      display: block;
+      font-size: .82rem;
+      color: #7a9ab5;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select {
       width: 100%;
       background: #0f1923;
       border: 1px solid #1e3347;
@@ -49,8 +90,15 @@
       outline: none;
       transition: border-color .2s;
     }
-    input:focus, select:focus { border-color: #4fc3f7; }
-    select option { background: #0f1923; }
+
+    input:focus,
+    select:focus {
+      border-color: #4fc3f7;
+    }
+
+    select option {
+      background: #0f1923;
+    }
 
     .cadena-preview {
       background: #0f1923;
@@ -76,8 +124,16 @@
       cursor: pointer;
       transition: background .2s;
     }
-    button:hover { background: #81d4fa; }
-    button:disabled { background: #1e3347; color: #4a6070; cursor: not-allowed; }
+
+    button:hover {
+      background: #81d4fa;
+    }
+
+    button:disabled {
+      background: #1e3347;
+      color: #4a6070;
+      cursor: not-allowed;
+    }
 
     .resultado-box {
       background: #0f1923;
@@ -85,14 +141,47 @@
       border-radius: 10px;
       padding: 18px 20px;
     }
-    .resultado-valor { font-size: 2.2rem; font-weight: 700; color: #4fc3f7; text-align: center; margin-bottom: 6px; }
-    .resultado-sub   { text-align: center; font-size: .85rem; color: #7a9ab5; }
 
-    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
-    th { background: #1e3347; color: #4fc3f7; padding: 8px 12px; text-align: left; font-weight: 600; }
-    td { padding: 8px 12px; border-bottom: 1px solid #1a2d3e; }
-    tr:last-child td { border-bottom: none; }
-    tr:nth-child(even) td { background: #131f2a; }
+    .resultado-valor {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #4fc3f7;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .resultado-sub {
+      text-align: center;
+      font-size: .85rem;
+      color: #7a9ab5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85rem;
+    }
+
+    th {
+      background: #1e3347;
+      color: #4fc3f7;
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #1a2d3e;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) td {
+      background: #131f2a;
+    }
 
     #arbol-svg-wrap {
       width: auto;
@@ -104,8 +193,15 @@
       display: flex;
       justify-content: center;
     }
-    #card-arbol { max-width: 95%; }
-    #arbol-svg { display: block; margin: 0 auto; }
+
+    #card-arbol {
+      max-width: 95%;
+    }
+
+    #arbol-svg {
+      display: block;
+      margin: 0 auto;
+    }
 
     .leyenda {
       display: flex;
@@ -115,8 +211,19 @@
       font-size: .78rem;
       color: #7a9ab5;
     }
-    .leyenda-item { display: flex; align-items: center; gap: 6px; }
-    .leyenda-dot  { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .leyenda-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
 
     .error-msg {
       background: #2a1018;
@@ -127,301 +234,341 @@
       font-size: .9rem;
     }
 
-    .hidden { display: none; }
-    .section-label { font-size: .78rem; color: #4a6070; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+    .hidden {
+      display: none;
+    }
+
+    .section-label {
+      font-size: .78rem;
+      color: #4a6070;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
+
 <body>
 
-<header>
-  <h1>Conversor de Divisas</h1>
-  <p>Análisis Léxico · Sintáctico · Árbol de Derivación</p>
-</header>
+  <header>
+    <h1>Conversor de Divisas</h1>
+    <p>Análisis Léxico · Sintáctico · Árbol de Derivación</p>
+  </header>
 
-<!-- Formulario -->
-<div class="card">
-  <h2>Nueva Conversión</h2>
-  <div class="form-row single">
-    <div>
-      <label>Cantidad</label>
-      <input type="number" id="cantidad" placeholder="Ej: 1500" min="0" step="any"/>
+  <!-- Formulario -->
+  <div class="card">
+    <h2>Nueva Conversión</h2>
+    <div class="form-row single">
+      <div>
+        <label>Cantidad</label>
+        <input type="number" id="cantidad" placeholder="Ej: 1500" min="0" step="any" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Moneda de Origen</label>
+        <select id="origen">
+          <option value="">— Seleccionar —</option>
+          {% for d in divisas %}
+          <option value="{{ d }}">{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Moneda de Destino</label>
+        <select id="destino">
+          <option value="">— Seleccionar —</option>
+          {% for d in divisas %}
+          <option value="{{ d }}">{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <p class="section-label">Cadena generada</p>
+    <div class="cadena-preview" id="cadena-preview">—</div>
+    <button id="btn-convertir" onclick="convertir()">Convertir</button>
+  </div>
+
+  <!-- Resultado -->
+  <div class="card hidden" id="card-resultado">
+    <h2>Resultado</h2>
+    <div class="resultado-box">
+      <div class="resultado-valor" id="resultado-valor">—</div>
+      <div class="resultado-sub" id="resultado-sub"></div>
     </div>
   </div>
-  <div class="form-row">
-    <div>
-      <label>Moneda de Origen</label>
-      <select id="origen">
-        <option value="">— Seleccionar —</option>
-        {% for d in divisas %}
-        <option value="{{ d }}">{{ d }}</option>
-        {% endfor %}
-      </select>
+
+  <!-- Error -->
+  <div class="card hidden" id="card-error">
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <!-- Tokens -->
+  <div class="card hidden" id="card-tokens">
+    <h2>Analizador Léxico — Tokens</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Línea</th>
+          <th>Tipo</th>
+          <th>Valor / Lexema</th>
+          <th>Posición</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-tokens"></tbody>
+    </table>
+  </div>
+
+  <!-- Árbol -->
+  <div class="card hidden" id="card-arbol">
+    <h2>Árbol de Análisis Sintáctico</h2>
+    <div id="arbol-svg-wrap">
+      <svg id="arbol-svg"></svg>
     </div>
-    <div>
-      <label>Moneda de Destino</label>
-      <select id="destino">
-        <option value="">— Seleccionar —</option>
-        {% for d in divisas %}
-        <option value="{{ d }}">{{ d }}</option>
-        {% endfor %}
-      </select>
+    <div class="leyenda">
+      <div class="leyenda-item">
+        <div class="leyenda-dot" style="background:#1A3A5C;border:2px solid #4fc3f7"></div> No terminal (regla de
+        producción)
+      </div>
+      <div class="leyenda-item">
+        <div class="leyenda-dot" style="background:#0f3320;border:2px solid #4caf50;border-radius:8px"></div> Terminal
+        (token + lexema)
+      </div>
     </div>
   </div>
-  <p class="section-label">Cadena generada</p>
-  <div class="cadena-preview" id="cadena-preview">—</div>
-  <button id="btn-convertir" onclick="convertir()">Convertir</button>
-</div>
 
-<!-- Resultado -->
-<div class="card hidden" id="card-resultado">
-  <h2>Resultado</h2>
-  <div class="resultado-box">
-    <div class="resultado-valor" id="resultado-valor">—</div>
-    <div class="resultado-sub"   id="resultado-sub"></div>
-  </div>
-</div>
+  <script>
 
-<!-- Error -->
-<div class="card hidden" id="card-error">
-  <div class="error-msg" id="error-msg"></div>
-</div>
+    const selOrigen = document.getElementById('origen');
+    const selDestino = document.getElementById('destino');
 
-<!-- Tokens -->
-<div class="card hidden" id="card-tokens">
-  <h2>Analizador Léxico — Tokens</h2>
-  <table>
-    <thead><tr><th>Línea</th><th>Tipo</th><th>Valor / Lexema</th><th>Posición</th></tr></thead>
-    <tbody id="tabla-tokens"></tbody>
-  </table>
-</div>
 
-<!-- Árbol -->
-<div class="card hidden" id="card-arbol">
-  <h2>Árbol de Análisis Sintáctico</h2>
-  <div id="arbol-svg-wrap">
-    <svg id="arbol-svg"></svg>
-  </div>
-  <div class="leyenda">
-    <div class="leyenda-item"><div class="leyenda-dot" style="background:#1A3A5C;border:2px solid #4fc3f7"></div> No terminal (regla de producción)</div>
-    <div class="leyenda-item"><div class="leyenda-dot" style="background:#0f3320;border:2px solid #4caf50;border-radius:8px"></div> Terminal (token + lexema)</div>
-  </div>
-</div>
+    const todasOpciones = [...selOrigen.options].filter(o => o.value !== '');
 
-<script>
-// ─── Preview ──────────────────────────────────────────────────────────────────
-['cantidad','origen','destino'].forEach(id =>
-  document.getElementById(id).addEventListener('input', actualizarPreview)
-);
-function actualizarPreview() {
-  const c = document.getElementById('cantidad').value.trim();
-  const o = document.getElementById('origen').value;
-  const d = document.getElementById('destino').value;
-  document.getElementById('cadena-preview').textContent =
-    (c && o && d) ? `${c}${o}a${d}$` : '—';
-}
-
-// ─── Fetch ────────────────────────────────────────────────────────────────────
-async function convertir() {
-  const cantidad = document.getElementById('cantidad').value.trim();
-  const origen   = document.getElementById('origen').value;
-  const destino  = document.getElementById('destino').value;
-
-  ['card-resultado','card-error','card-tokens','card-arbol'].forEach(id =>
-    document.getElementById(id).classList.add('hidden')
-  );
-
-  if (!cantidad || !origen || !destino) { mostrarError("Completa todos los campos."); return; }
-  if (origen === destino) { mostrarError("La moneda de origen y destino no pueden ser iguales."); return; }
-
-  const btn = document.getElementById('btn-convertir');
-  btn.disabled = true; btn.textContent = 'Procesando...';
-
-  try {
-    const res  = await fetch('/convertir', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({cantidad, origen, destino})
-    });
-    const data = await res.json();
-    if (data.error) { mostrarError(data.error); }
-    else { mostrarResultado(data); mostrarTokens(data.tokens); dibujarArbol(data.arbol); }
-  } catch(e) { mostrarError("Error de conexión con el servidor."); }
-  finally { btn.disabled = false; btn.textContent = 'Convertir'; }
-}
-
-function mostrarError(msg) {
-  document.getElementById('error-msg').textContent = msg;
-  document.getElementById('card-error').classList.remove('hidden');
-}
-function mostrarResultado(data) {
-  const s = data.semantica;
-  document.getElementById('resultado-valor').textContent =
-    `${s.resultado.toLocaleString('es-HN',{minimumFractionDigits:2,maximumFractionDigits:4})} ${s.cod_destino}`;
-  document.getElementById('resultado-sub').textContent =
-    `${s.cantidad} ${s.cod_origen}  →  ${s.resultado} ${s.cod_destino}  |  Tasa: 1 ${s.cod_origen} = ${s.tasa} ${s.cod_destino}`;
-  document.getElementById('card-resultado').classList.remove('hidden');
-}
-function mostrarTokens(tokens) {
-  const tbody = document.getElementById('tabla-tokens');
-  tbody.innerHTML = '';
-  tokens.forEach(t => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${t.linea}</td><td>${t.tipo}</td><td>${t.valor}</td><td>${t.posicion}</td>`;
-    tbody.appendChild(tr);
-  });
-  document.getElementById('card-tokens').classList.remove('hidden');
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-//  ÁRBOL SINTÁCTICO — SVG
-// ═══════════════════════════════════════════════════════════════════════════════
-const NW = 160, NH = 46, LH = 100, PAD_X = 30, PAD_Y = 40;
-
-// Paso 1: contar hojas
-function countLeaves(n) {
-  if (!n.hijos || n.hijos.length === 0) { n._lv = 1; return 1; }
-  n._lv = n.hijos.reduce((s, h) => s + countLeaves(h), 0);
-  return n._lv;
-}
-
-// Paso 2: asignar coordenadas
-function assignPos(n, depth, leftLeaf, lw) {
-  n._d = depth;
-  n._y = depth * LH + PAD_Y;
-  if (!n.hijos || n.hijos.length === 0) {
-    n._x = leftLeaf * lw + lw / 2;
-    return;
-  }
-  let cur = leftLeaf;
-  n.hijos.forEach(h => { assignPos(h, depth+1, cur, lw); cur += h._lv; });
-  n._x = (n.hijos[0]._x + n.hijos[n.hijos.length-1]._x) / 2;
-}
-
-// Paso 3: recolectar todos
-function collect(n, arr) {
-  arr.push(n);
-  if (n.hijos) n.hijos.forEach(h => collect(h, arr));
-  return arr;
-}
-
-// Paso 4 (eliminado): ya no se expanden nodos de valor como hijos separados.
-
-// Etiqueta principal del nodo (línea 1)
-function label(n) {
-  if (n.tipo === 'regla') return n.nombre.toUpperCase();
-  if (n.tipo === 'token') return n.nombre;  // nombre del token en mayúsculas
-  return n.nombre;
-}
-
-// Sublabel para tokens: el valor léxico (línea 2)
-function sublabel(n) {
-  if (n.tipo === 'token' && n.valor) return `"${n.valor}"`;
-  return null;
-}
-
-function svgEl(tag, attrs, text) {
-  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
-  Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, String(v)));
-  if (text !== undefined) el.textContent = text;
-  return el;
-}
-
-function dibujarArbol(raiz) {
-  const svg = document.getElementById('arbol-svg');
-  while (svg.firstChild) svg.removeChild(svg.firstChild);
-
-  // NO llamamos expandValues: el árbol solo tiene terminales y no terminales
-  const totalLeaves = countLeaves(raiz);
-  const lw = Math.max(NW + 30, 680 / totalLeaves);
-  assignPos(raiz, 0, 0, lw);
-
-  const nodes  = collect(raiz, []);
-  const maxD   = Math.max(...nodes.map(n => n._d));
-  const svgW   = totalLeaves * lw + PAD_X * 2;
-  const svgH   = (maxD + 1) * LH + PAD_Y + NH + 30;
-
-  svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
-  svg.style.width = '100%';
-  svg.style.height = 'auto';
-  svg.style.maxWidth = `${svgW}px`;
-
-  // ── Definir marcador de flecha ──
-  const defs = svgEl('defs', {});
-  const mk   = svgEl('marker', { id:'arr', markerWidth:10, markerHeight:7, refX:9, refY:3.5, orient:'auto' });
-  mk.appendChild(svgEl('polygon', { points:'0 0, 10 3.5, 0 7', fill:'#2e5473' }));
-  defs.appendChild(mk);
-  svg.appendChild(defs);
-
-  // ── Aristas ──
-  nodes.forEach(n => {
-    if (!n.hijos) return;
-    n.hijos.forEach(c => {
-      const x1=n._x, y1=n._y+NH, x2=c._x, y2=c._y;
-      const my=(y1+y2)/2;
-      svg.appendChild(svgEl('path', {
-        d:`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`,
-        stroke:'#2e5473', 'stroke-width':1.8, fill:'none', 'marker-end':'url(#arr)'
-      }));
-    });
-  });
-
-  // ── Nodos ──
-  nodes.forEach(n => {
-    const x   = n._x - NW/2;
-    const y   = n._y;
-    const lbl = label(n);
-    const sub = sublabel(n);
-    const maxCh = 18;
-    const disp  = lbl.length > maxCh ? lbl.slice(0, maxCh-1)+'…' : lbl;
-    const dispSub = sub && sub.length > maxCh ? sub.slice(0, maxCh-1)+'…' : sub;
-
-    let fill, stroke, tcolor, subcolor, rx, fw, fs;
-    if (n.tipo === 'regla') {
-      fill='#1A3A5C'; stroke='#4fc3f7'; tcolor='#e0f4ff'; subcolor='#90caf9'; rx=8; fw='bold'; fs=13;
-    } else {
-      // terminal / token
-      fill='#0f3320'; stroke='#4caf50'; tcolor='#b9f6ca'; subcolor='#69f0ae'; rx=NH/2; fw='600'; fs=12;
+    function filtrarSelect(selActualizado, valorElegidoEnOtro) {
+      const valorActual = selActualizado.value;
+      selActualizado.innerHTML = '<option value="">— Seleccionar —</option>';
+      todasOpciones.forEach(opt => {
+        if (opt.value !== valorElegidoEnOtro) {
+          const o = document.createElement('option');
+          o.value = opt.value;
+          o.textContent = opt.textContent;
+          if (opt.value === valorActual) o.selected = true;
+          selActualizado.appendChild(o);
+        }
+      });
     }
 
-    const g = svgEl('g', {});
+    selOrigen.addEventListener('change', () => {
+      filtrarSelect(selDestino, selOrigen.value);
+      actualizarPreview();
+    });
+    selDestino.addEventListener('change', () => {
+      filtrarSelect(selOrigen, selDestino.value);
+      actualizarPreview();
+    });
+    document.getElementById('cantidad').addEventListener('input', actualizarPreview);
 
-    const rect = svgEl('rect', { x, y, width:NW, height:NH, rx, fill, stroke, 'stroke-width':2 });
-    const title = svgEl('title', {}, sub ? `${lbl}: ${sub}` : lbl);
-    rect.appendChild(title);
-    g.appendChild(rect);
-
-    if (sub) {
-      // Dos líneas: nombre arriba, valor léxico abajo
-      const txtTop = svgEl('text', {
-        x: n._x, y: y + NH/2 - 7,
-        'text-anchor':'middle', 'dominant-baseline':'middle',
-        fill: tcolor, 'font-family':'Segoe UI,Arial,sans-serif',
-        'font-size': fs, 'font-weight': fw
-      }, disp);
-      g.appendChild(txtTop);
-
-      const txtBot = svgEl('text', {
-        x: n._x, y: y + NH/2 + 9,
-        'text-anchor':'middle', 'dominant-baseline':'middle',
-        fill: subcolor, 'font-family':'monospace',
-        'font-size': 10, 'font-weight': 'normal'
-      }, dispSub);
-      g.appendChild(txtBot);
-    } else {
-      // Una sola línea centrada
-      const txt = svgEl('text', {
-        x: n._x, y: y + NH/2 + 1,
-        'text-anchor':'middle', 'dominant-baseline':'middle',
-        fill: tcolor, 'font-family':'Segoe UI,Arial,sans-serif',
-        'font-size': fs, 'font-weight': fw
-      }, disp);
-      g.appendChild(txt);
+    function actualizarPreview() {
+      const c = document.getElementById('cantidad').value.trim();
+      const o = selOrigen.value;
+      const d = selDestino.value;
+      document.getElementById('cadena-preview').textContent =
+        (c && o && d) ? `${c}${o}a${d}$` : '—';
     }
 
-    svg.appendChild(g);
-  });
+    // ─── Fetch ────────────────────────────────────────────────────────────────────
+    async function convertir() {
+      const cantidad = document.getElementById('cantidad').value.trim();
+      const origen = document.getElementById('origen').value;
+      const destino = document.getElementById('destino').value;
 
-  document.getElementById('card-arbol').classList.remove('hidden');
-}
-</script>
+      ['card-resultado', 'card-error', 'card-tokens', 'card-arbol'].forEach(id =>
+        document.getElementById(id).classList.add('hidden')
+      );
+
+      if (!cantidad || !origen || !destino) { mostrarError("Completa todos los campos."); return; }
+      if (origen === destino) { mostrarError("La moneda de origen y destino no pueden ser iguales."); return; }
+
+      const btn = document.getElementById('btn-convertir');
+      btn.disabled = true; btn.textContent = 'Procesando...';
+
+      try {
+        const res = await fetch('/convertir', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cantidad, origen, destino })
+        });
+        const data = await res.json();
+        if (data.error) { mostrarError(data.error); }
+        else { mostrarResultado(data); mostrarTokens(data.tokens); dibujarArbol(data.arbol); }
+      } catch (e) { mostrarError("Error de conexión con el servidor."); }
+      finally { btn.disabled = false; btn.textContent = 'Convertir'; }
+    }
+
+    function mostrarError(msg) {
+      document.getElementById('error-msg').textContent = msg;
+      document.getElementById('card-error').classList.remove('hidden');
+    }
+    function mostrarResultado(data) {
+      const s = data.semantica;
+      document.getElementById('resultado-valor').textContent =
+        `${s.resultado.toLocaleString('es-HN', { minimumFractionDigits: 2, maximumFractionDigits: 4 })} ${s.cod_destino}`;
+      document.getElementById('resultado-sub').textContent =
+        `${s.cantidad} ${s.cod_origen}  →  ${s.resultado} ${s.cod_destino}  |  Tasa: 1 ${s.cod_origen} = ${s.tasa} ${s.cod_destino}`;
+      document.getElementById('card-resultado').classList.remove('hidden');
+    }
+    function mostrarTokens(tokens) {
+      const tbody = document.getElementById('tabla-tokens');
+      tbody.innerHTML = '';
+      tokens.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${t.linea}</td><td>${t.tipo}</td><td>${t.valor}</td><td>${t.posicion}</td>`;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('card-tokens').classList.remove('hidden');
+    }
+
+    const NW = 160, NH = 46, LH = 100, PAD_X = 30, PAD_Y = 40;
+
+    function countLeaves(n) {
+      if (!n.hijos || n.hijos.length === 0) { n._lv = 1; return 1; }
+      n._lv = n.hijos.reduce((s, h) => s + countLeaves(h), 0);
+      return n._lv;
+    }
+
+    function assignPos(n, depth, leftLeaf, lw) {
+      n._d = depth;
+      n._y = depth * LH + PAD_Y;
+      if (!n.hijos || n.hijos.length === 0) {
+        n._x = leftLeaf * lw + lw / 2;
+        return;
+      }
+      let cur = leftLeaf;
+      n.hijos.forEach(h => { assignPos(h, depth + 1, cur, lw); cur += h._lv; });
+      n._x = (n.hijos[0]._x + n.hijos[n.hijos.length - 1]._x) / 2;
+    }
+
+
+    function collect(n, arr) {
+      arr.push(n);
+      if (n.hijos) n.hijos.forEach(h => collect(h, arr));
+      return arr;
+    }
+
+    function label(n) {
+      if (n.tipo === 'regla') return n.nombre.toUpperCase();
+      if (n.tipo === 'token') return n.nombre;
+      return n.nombre;
+    }
+
+    function sublabel(n) {
+      if (n.tipo === 'token' && n.valor) return `"${n.valor}"`;
+      return null;
+    }
+
+    function svgEl(tag, attrs, text) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)));
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    function dibujarArbol(raiz) {
+      const svg = document.getElementById('arbol-svg');
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+      const totalLeaves = countLeaves(raiz);
+      const lw = Math.max(NW + 30, 680 / totalLeaves);
+      assignPos(raiz, 0, 0, lw);
+
+      const nodes = collect(raiz, []);
+      const maxD = Math.max(...nodes.map(n => n._d));
+      const svgW = totalLeaves * lw + PAD_X * 2;
+      const svgH = (maxD + 1) * LH + PAD_Y + NH + 30;
+
+      svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+      svg.style.width = '100%';
+      svg.style.height = 'auto';
+      svg.style.maxWidth = `${svgW}px`;
+
+      const defs = svgEl('defs', {});
+      const mk = svgEl('marker', { id: 'arr', markerWidth: 10, markerHeight: 7, refX: 9, refY: 3.5, orient: 'auto' });
+      mk.appendChild(svgEl('polygon', { points: '0 0, 10 3.5, 0 7', fill: '#2e5473' }));
+      defs.appendChild(mk);
+      svg.appendChild(defs);
+
+
+      nodes.forEach(n => {
+        if (!n.hijos) return;
+        n.hijos.forEach(c => {
+          const x1 = n._x, y1 = n._y + NH, x2 = c._x, y2 = c._y;
+          const my = (y1 + y2) / 2;
+          svg.appendChild(svgEl('path', {
+            d: `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`,
+            stroke: '#2e5473', 'stroke-width': 1.8, fill: 'none', 'marker-end': 'url(#arr)'
+          }));
+        });
+      });
+
+
+      nodes.forEach(n => {
+        const x = n._x - NW / 2;
+        const y = n._y;
+        const lbl = label(n);
+        const sub = sublabel(n);
+        const maxCh = 18;
+        const disp = lbl.length > maxCh ? lbl.slice(0, maxCh - 1) + '…' : lbl;
+        const dispSub = sub && sub.length > maxCh ? sub.slice(0, maxCh - 1) + '…' : sub;
+
+        let fill, stroke, tcolor, subcolor, rx, fw, fs;
+        if (n.tipo === 'regla') {
+          fill = '#1A3A5C'; stroke = '#4fc3f7'; tcolor = '#e0f4ff'; subcolor = '#90caf9'; rx = 8; fw = 'bold'; fs = 13;
+        } else {
+
+          fill = '#0f3320'; stroke = '#4caf50'; tcolor = '#b9f6ca'; subcolor = '#69f0ae'; rx = NH / 2; fw = '600'; fs = 12;
+        }
+
+        const g = svgEl('g', {});
+
+        const rect = svgEl('rect', { x, y, width: NW, height: NH, rx, fill, stroke, 'stroke-width': 2 });
+        const title = svgEl('title', {}, sub ? `${lbl}: ${sub}` : lbl);
+        rect.appendChild(title);
+        g.appendChild(rect);
+
+        if (sub) {
+
+          const txtTop = svgEl('text', {
+            x: n._x, y: y + NH / 2 - 7,
+            'text-anchor': 'middle', 'dominant-baseline': 'middle',
+            fill: tcolor, 'font-family': 'Segoe UI,Arial,sans-serif',
+            'font-size': fs, 'font-weight': fw
+          }, disp);
+          g.appendChild(txtTop);
+
+          const txtBot = svgEl('text', {
+            x: n._x, y: y + NH / 2 + 9,
+            'text-anchor': 'middle', 'dominant-baseline': 'middle',
+            fill: subcolor, 'font-family': 'monospace',
+            'font-size': 10, 'font-weight': 'normal'
+          }, dispSub);
+          g.appendChild(txtBot);
+        } else {
+
+          const txt = svgEl('text', {
+            x: n._x, y: y + NH / 2 + 1,
+            'text-anchor': 'middle', 'dominant-baseline': 'middle',
+            fill: tcolor, 'font-family': 'Segoe UI,Arial,sans-serif',
+            'font-size': fs, 'font-weight': fw
+          }, disp);
+          g.appendChild(txt);
+        }
+
+        svg.appendChild(g);
+      });
+
+      document.getElementById('card-arbol').classList.remove('hidden');
+    }
+  </script>
 </body>
+
 </html>
