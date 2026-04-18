@@ -13,12 +13,12 @@ from lexer import tokens, lexer, analizar_tokens, DIVISAS
 # ─── TASAS DE CAMBIO (base USD) ───────────────────────────────────────────────
 TASAS_USD = {
     "USD": 1.0,
-    "EUR": 0.92,
-    "HNL": 24.70,
-    "MXN": 17.15,
-    "GBP": 0.79,
-    "JPY": 149.50,
-    "CRC": 510.50,
+    "EUR": 0.85,
+    "HNL": 26.52,
+    "MXN": 17.29,
+    "GBP": 0.74,
+    "JPY": 158.61,
+    "CRC": 452.50,
 }
 
 
