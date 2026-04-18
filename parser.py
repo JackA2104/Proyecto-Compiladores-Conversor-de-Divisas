@@ -11,7 +11,6 @@ import json
 from lexer import tokens, lexer, analizar_tokens, DIVISAS
 
 # ─── TASAS DE CAMBIO (base USD) ───────────────────────────────────────────────
-# Actualiza estos valores según las tasas vigentes.
 TASAS_USD = {
     "USD": 1.0,
     "EUR": 0.92,
